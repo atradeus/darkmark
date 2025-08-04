@@ -10,9 +10,28 @@ app = { path = "../app", default-features = false, features = ["ssr"] }
 leptos = { workspace = true, features = [ "ssr" ]}
 leptos_axum.workspace = true
 
+lib.workspace = true
 axum.workspace = true
 simple_logger.workspace = true
 tokio.workspace = true
 tower.workspace = true
 tower-http.workspace = true
 log.workspace = true
+aws-config.workspace = true
+aws-sdk-ec2.workspace = true
+env_logger.workspace = true
+sqlx.workspace = true
+sqlx-postgres.workspace = true
+postgres.workspace = true
+axum_session.workspace = true
+axum_session_auth.workspace = true
+axum_session_sqlx.workspace = true
+#axum-macros.workspace = true
+serde.workspace = true
+chrono.workspace = true
+anyhow.workspace = true
+axum-macros.workspace = true
+argon2.workspace = true
+async-trait.workspace = true
+mockall = "0.13.1"
+tracing = "0.1.41"

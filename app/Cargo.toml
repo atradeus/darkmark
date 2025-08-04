@@ -6,17 +6,38 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+lib.workspace = true
 leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 leptos_axum = { workspace = true, optional = true }
-
+axum = { workspace = true, optional = true }
 http.workspace = true
 cfg-if.workspace = true
 thiserror.workspace = true
+rust-i18n.workspace = true
+#leptos-use.workspace = true
+reactive_graph.workspace = true
+anyhow.workspace = true
+reqwest = { version = "0.12.15", features = ["json"] }
+serde = { version = "1.0.219", features = ["derive"] }
+reqwasm = "0.5.0"
+gloo-timers = "0.3.0"
+log = "0.4.26"
+web-sys = "0.3.77"
+send_wrapper = "0.6.0"
+gloo-net.workspace = true
+
 
 [features]
 default = []
 hydrate = ["leptos/hydrate"]
-ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum"]
+ssr = [
+    "dep:axum",
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+    "dep:leptos_axum",
+#    "leptos-use/ssr",
+]
 

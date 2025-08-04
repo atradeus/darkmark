@@ -1,23 +1,47 @@
+#[macro_use]
+extern crate rust_i18n;
+pub mod api;
+pub mod component;
+pub mod page;
+
 use leptos::prelude::*;
-use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
+use leptos_meta::{provide_meta_context, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
     StaticSegment,
 };
+// use leptos_use::{use_color_mode_with_options, UseColorModeOptions, UseColorModeReturn};
+use page::home::HomePage;
+use rust_i18n::t;
+use crate::page::login::Login;
+
+i18n!("locales", fallback = "en");
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
+    // let UseColorModeReturn { mode, set_mode, .. } =
+    //     use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
+    // let UseColorModeReturn { mode, .. } =
+    //     use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
+
     view! {
         <!DOCTYPE html>
-        <html lang="en">
+        // <html lang="en" class=move || mode.get().to_string()>
+        <html lang="en" class="dark">
+            // <html lang="en" class="light">
             <head>
-                <meta charset="utf-8"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <AutoReload options=options.clone()/>
-                <HydrationScripts options/>
-                <MetaTags/>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <AutoReload options=options.clone() />
+                <HydrationScripts options />
+                // <base href=".">
+                <leptos_meta::MetaTags />
+                // <meta name="color-scheme" content="dark light" />
+                <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+                <link rel="stylesheet" id="leptos" href="/pkg/darkmark.css" />
             </head>
-            <body>
-                <App/>
+            // <body class="grid h-screen place-items-center">
+            <body class="flex items-center justify-center h-screen w-full">
+                <App />
             </body>
         </html>
     }
@@ -29,31 +53,17 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-        <Stylesheet id="leptos" href="/pkg/start-axum-workspace.css"/>
-
         // sets the document title
-        <Title text="Welcome to Leptos"/>
+        <Title text=t!("app_name").to_string() />
 
         // content for this welcome page
         <Router>
             <main>
                 <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("") view=HomePage/>
+                    <Route path=StaticSegment("/") view=HomePage />
+                    <Route path=StaticSegment("/login") view=Login />
                 </Routes>
             </main>
         </Router>
-    }
-}
-
-/// Renders the home page of your application.
-#[component]
-fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let count = RwSignal::new(0);
-    let on_click = move |_| *count.write() += 1;
-
-    view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
     }
 }
