@@ -3,15 +3,28 @@ use axum::extract::State;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
 use axum_macros::debug_handler;
+use axum_session_auth::AuthSession;
+use axum_session_sqlx::SessionPgPool;
 use chrono::{DateTime, Utc};
 use leptos::prelude::ServerFnError;
+use lib::user::User;
 use lib::Region;
+use log::debug;
 use postgres::error::DbError;
 use serde::{Deserialize, Serialize};
-use sqlx::FromRow;
-use sqlx_postgres::PgPool;
+use sqlx::{FromRow, Pool};
+use sqlx_postgres::{PgPool, Postgres};
+use crate::user::AppUser;
 
-pub async fn list_regions(State(pool): State<PgPool>) -> Result<Json<Vec<Region>>, AppError> {
+// pub async fn list_regions(State(pool): State<PgPool>) -> Result<Json<Vec<Region>>, AppError> {
+pub async fn list_regions(
+    auth: AuthSession<AppUser, String, SessionPgPool, PgPool>,
+    State(pool): State<PgPool>,
+) -> Result<Json<Vec<Region>>, AppError> {
+    if !auth.is_authenticated() {
+        return Err(AppError::LoginError("Not logged in".to_string()))
+    }
+
     #[derive(Debug, FromRow, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
     struct DbRegion {
         pub id: i32,

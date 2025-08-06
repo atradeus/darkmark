@@ -11,14 +11,15 @@ pub struct Error {
 pub struct SelectOpt {
     pub value: String,
     pub label: String,
+    pub disabled: bool,
 }
 
 impl SelectOpt {
     // pub fn new(value: &'static str, label: &'static str) -> Option {
     //     Option { value, label }
     // }
-    pub fn new(value: String, label: String) -> SelectOpt {
-        SelectOpt { value, label }
+    pub fn new(value: String, label: String, disabled: bool) -> SelectOpt {
+        SelectOpt { value, label, disabled }
     }
 }
 

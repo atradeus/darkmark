@@ -1,18 +1,14 @@
-@import "tailwindcss";
-@plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
-}
+@import 'tailwindcss';
+@source "./src/**/*.rs";
+/*@plugin "@tailwindcss/typography";*/
 
-/*@custom-variant dark (&:where(.dark, .dark *));*/
+@plugin "daisyui" {
+  /*themes: light --default, dark --prefersdark, black;*/
+  themes: all;
+}
 
 @layer base {
   body {
     @apply text-center bg-stone-400
   }
 }
-
-/*@layer utilities {*/
-/*  .btn {*/
-/*    @apply inline-flex items-center px-4 py-2 text-white text-sm font-medium rounded-md*/
-/*  }*/
-/*}*/

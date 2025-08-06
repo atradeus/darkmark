@@ -87,7 +87,7 @@ async fn main() {
 
     env_logger::init();
 
-    let db_url = "postgres://darkmark:darkmark@athena:5432/darkmark";
+    let db_url = "postgres://darkmark:darkmark@athena.local:5432/darkmark";
     let pool = match PgPoolOptions::new()
         .max_connections(5)
         // .connect(&std::env::var("DATABASE_URL").unwrap())
@@ -134,30 +134,14 @@ async fn main() {
         .allow_origin(Any)
         .allow_headers([CONTENT_TYPE]);
 
-    // build our application with a route
-    // let app = Router::new()
-    //     .route("/ping", get(|| async { "pong" }))
-    //     .route("/api/auth", post(user::auth))
-    //     .layer(cors)
-    //     // .route(
-    //     //     "/api/*fn_name",
-    //     //     get(server_fn_handler).post(server_fn_handler),
-    //     // )
-    //     .layer(
-    //         AuthSessionLayer::<AppUser, String, SessionPgPool, Pool<Postgres>>::new(Some(pool.clone()))
-    //             .with_config(auth_config),
-    //     )
-    //     .leptos_routes(&app_state, routes, App)
-    //     .fallback(file_and_error_handler)
-    //     .with_state(app_state)
-    //     .layer(SessionLayer::new(session_store))
-    //     ;
-
     let app = Router::new()
         .route("/ping", get(|| async { "pong" }))
         .route("/api/auth", post(auth))
         .route("/api/region", get(db::region::list_regions))
-        .route("/api/{*fn_name}", post(server_func_handler))
+        .route(
+            "/api/{*fn_name}",
+            get(server_func_handler).post(server_func_handler),
+        )
         .layer(cors)
         .layer(
             AuthSessionLayer::<AppUser, String, SessionPgPool, Pool<Postgres>>::new(Some(

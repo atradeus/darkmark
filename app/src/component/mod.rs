@@ -1,3 +1,3 @@
 pub mod select;
 pub mod region;
-pub mod credentials;
+pub mod navbar;

@@ -11,9 +11,9 @@ use leptos_router::{
     StaticSegment,
 };
 // use leptos_use::{use_color_mode_with_options, UseColorModeOptions, UseColorModeReturn};
+use crate::page::login::Login;
 use page::home::HomePage;
 use rust_i18n::t;
-use crate::page::login::Login;
 
 i18n!("locales", fallback = "en");
 
@@ -26,8 +26,9 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
         <!DOCTYPE html>
         // <html lang="en" class=move || mode.get().to_string()>
-        <html lang="en" class="dark">
+        <html lang="en" data-theme="black">
             // <html lang="en" class="light">
+            <base href="." />
             <head>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,8 +40,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                 <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
                 <link rel="stylesheet" id="leptos" href="/pkg/darkmark.css" />
             </head>
-            // <body class="grid h-screen place-items-center">
-            <body class="flex items-center justify-center h-screen w-full">
+            <body class="not-prose relative left-1/2 w-dvw max-w-none -translate-x-1/2">
                 <App />
             </body>
         </html>
@@ -51,19 +51,18 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
-
+    
     view! {
-        // sets the document title
         <Title text=t!("app_name").to_string() />
-
-        // content for this welcome page
-        <Router>
-            <main>
-                <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("/") view=HomePage />
-                    <Route path=StaticSegment("/login") view=Login />
-                </Routes>
-            </main>
-        </Router>
+        <div class="container gap-4 grid grid-cols-1 mx-auto text-center bg-stone-900 text-white">
+            <Router>
+                <main>
+                    <Routes fallback=|| "Page not found.".into_view()>
+                        <Route path=StaticSegment("/") view=HomePage />
+                        <Route path=StaticSegment("/login") view=Login />
+                    </Routes>
+                </main>
+            </Router>
+        </div>
     }
 }
